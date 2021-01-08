@@ -28,15 +28,16 @@ In this way to use `kafka-connect`, we will deploy the entire stack on `docker` 
 - [`schema-registry`](https://docs.confluent.io/platform/current/schema-registry/index.html) - *"It provides a RESTful interface for storing and retrieving your Avro, JSON Schema, and Protobuf schemas."*
 - [`kafka-connect`](https://docs.confluent.io/platform/current/connect/index.html) - *"Kafka Connect is a tool for scalably and reliably streaming data between Apache Kafka and other data systems."*
 
-#### Kafka Connect plugins
+#### 1. Kafka Connect plugins
+
+> See alse [Discover Kafka connectors and more](https://www.confluent.io/hub)
 
 `kafka-connect` need plugins to interact with databases, download them and extract the content in the `plugins` folder :
 
-- [Kafka Connect JDBC](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc) - *"JDBC source and sink connectors"*
+- [`Kafka Connect JDBC`](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc) - *"JDBC source and sink connectors"*
+- [`Debezium PostgreSQL CDC Connector`](https://www.confluent.io/hub/debezium/debezium-connector-postgresql) - *"Debezium’s PostgreSQL Connector can monitor and record the row-level changes in the schemas of a PostgreSQL database"*
 
-- [Debezium PostgreSQL CDC Connector](https://www.confluent.io/hub/debezium/debezium-connector-postgresql) - *"Debezium’s PostgreSQL Connector can monitor and record the row-level changes in the schemas of a PostgreSQL database"*
-
-#### Deployment
+#### 2. Deployment
 
 Now, we can launch the environment :
 
@@ -59,25 +60,66 @@ $ docker logs confluent-connect | grep started
 [2021-01-08 00:32:41,837] INFO Kafka Connect started (org.apache.kafka.connect.runtime.Connect)
 ```
 
-#### Connectors creations
+#### 3. Connectors creations
+
+> See more endpoints on [Connect REST Interface](https://docs.confluent.io/platform/current/connect/references/restapi.html) documentation
 
 For create connectors to extract/inject datas between Kafka and external databases, we utilize curl commands trough the api `kafka-connect` endpoints :
 
 [`source`](https://docs.confluent.io/kafka-connect-jdbc/current/source-connector/index.html) - *Database to Kafka*
 
 ```bash
-curl -X POST -H "Content-Type: application/json" --data @connectors/postgresql-source.json http://localhost:8083/connectors
+curl -X POST http://localhost:8083/connectors \
+    -H "Content-Type: application/json" \
+    --data @connectors/postgresql-source.json 
 ```
+
+We define in [postgresql-source.json](connectors/postgresql-source.json) file the connection informations and the elements to watch (the table employees in this case). All updated rows will send on topic `hrdata.public.employees`
+
+```json
+{
+    "name": "postgresql-source-connector",  
+    "config": {
+      "connector.class": "io.debezium.connector.postgresql.PostgresConnector", 
+      "database.hostname": "postgres-source", 
+      "database.port": "5432", 
+      "database.user": "user", 
+      "database.password": "password", 
+      "database.dbname" : "db", 
+      "database.server.name": "hrdata", 
+      "table.include.list": "public.employees",
+      ...
+    }
+  }
+  ```
 
 [`sink`](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/index.html) - *Kafka to Database*
 
 ```bash
-curl -X POST -H "Content-Type: application/json" --data @connectors/postgresql-sink.json http://localhost:8083/connectors
+curl -X POST http://localhost:8083/connectors \
+    -H "Content-Type: application/json" \
+    --data @connectors/postgresql-sink.json
 ```
 
-> See more endpoints on [Connect REST Interface](https://docs.confluent.io/platform/current/connect/references/restapi.html) documentation
+Like the source file configuration, it exists the same for the sink side [postgresql-sink.json](connectors/postgresql-sink.json). If not exists, the target table will be create.
 
-See [Explanation](#explanations) section for more details
+```json
+{
+    "name": "postgresql-sink-connector",
+    "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "connection.url": "jdbc:postgresql://postgres-sink:5432/db?user=user&password=password",
+        "topics": "hrdata.public.employees",
+        "table.name.format": "employees",
+        "insert.mode": "insert",
+        "auto.create": true,
+    }
+}
+```
+
+#### 4. Manipulate the data
+
+Let's try it out ! Update or insert rows on `public.employees` table in postgres-source database.
 
 ## :gear: Others Commands
 
@@ -129,7 +171,7 @@ docker run --net=host --rm
         --from-beginning
 ```
 
-### Read topic (Avro)
+#### Read topic (Avro)
 
 ```bash
 docker run --net=host --rm \
@@ -139,12 +181,6 @@ docker run --net=host --rm \
         --timeout-ms 3000 \
         --from-beginning \
 ```
-
-## :information_source: Explanations
-
-With this above instructions, we tranfer datas based on events : inserts and updates between two databases via kafka topics asynchronously. Let's take a deep look on differents steps.
-
-:construction: *Work in progress* :construction:
 
 ## :link: Usefuls links
 
