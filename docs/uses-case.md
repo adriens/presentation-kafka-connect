@@ -124,13 +124,15 @@ In a `DBeaver` installed on host machine, the connection informations are a bit 
 
 In the case where the sink database is not operational but the messsages continue to be produced on the topic, let's see the data's behaviour on recovery.
 
-Stop the sink database
+#### 1. Stop the sink database
 
 ```bash
 docker stop postgres-sink
 ```
 
-Produce new messages (commands in [4. Produce data](#4-produce-data) step)
+#### 2. Produce new messages
+
+> commands in [4. Produce data](#4-produce-data) step
 
 ```bash
 {"phoneNumberEmitter":"123546","phoneNumberReceiver":"321654","message":"Testing is easier than debugging"}
@@ -151,13 +153,13 @@ confluentinc/cp-schema-registry:5.5.0 kafka-json-schema-console-consumer \
     --property schema.registry.url=http://localhost:8081
 ```
 
-Restart the sink database
+#### 3. Restart the sink database
 
 ```bash
 docker start postgres-sink
 ```
 
-Restart kafka-connect task
+#### 4. Restart kafka-connect task
 
 We can see the tasks status of the connector `postgresql-sms-sink-connector`
 
@@ -218,13 +220,15 @@ Let's check it out the database to ensure all messages are there.
 
 Same kind of issue but with Kafka connect.
 
-Stop the `confluent-connect`
+#### 1. Stop the `confluent-connect`
 
 ```bash
 docker stop confluent-connect
 ```
 
-Produce new messages (commands in [4. Produce data](#4-produce-data) step)
+#### 2. Produce newest messages
+
+> commands in [4. Produce data](#4-produce-data) step
 
 ```bash
 {"phoneNumberEmitter":"123546","phoneNumberReceiver":"321654","message":"Il est bon ou quoi?"}
@@ -234,7 +238,7 @@ Produce new messages (commands in [4. Produce data](#4-produce-data) step)
 {"phoneNumberEmitter":"789987","phoneNumberReceiver":"456654","message":"Ok tal"}
 ```
 
-Restart the `confluent-connect`
+#### 3. Restart the `confluent-connect`
 
 ```bash
 docker start confluent-connect

@@ -29,7 +29,7 @@ The purpose of this repository is to :
 
 - [ ] provide a slideshow that explains how Kafka Connect can be used, its principles and guidelines to set it up to connect Kafka and Psql
 - [x] A set of script based on Docker images and shell scripts to let people run the demo by themselves
-- [x] Show some use cases
+- [x] Show some [use cases](docs/uses-case.md)
 
 ## :books: Prerequisites
 
@@ -40,7 +40,7 @@ The purpose of this repository is to :
 
 ## :rocket: How to use
 
-In this way to use `kafka-connect`, we will deploy the entire stack on `docker` environnement. Here we use the `Confluent` elements :
+In this way to use [kafka-connect](https://kafka.apache.org/documentation/#connect), we will deploy the entire stack on [docker](https://www.docker.com/) environnement. Here we use the [Confluent](https://www.confluent.io/) elements :
 
 - [`schema-registry`](https://docs.confluent.io/platform/current/schema-registry/index.html) - *"It provides a RESTful interface for storing and retrieving your Avro, JSON Schema, and Protobuf schemas."*
 - [`kafka-connect`](https://docs.confluent.io/platform/current/connect/index.html) - *"Kafka Connect is a tool for scalably and reliably streaming data between Apache Kafka and other data systems."*
