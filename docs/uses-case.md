@@ -102,6 +102,8 @@ docker run -p 8085:80 \
     - Username : user
     - Password : password
 
+> See also the [pgAdmin documentation](https://www.pgadmin.org/docs/pgadmin4/latest/server_dialog.html)
+
 #### Dbeaver
 
 In a `DBeaver` installed on host machine, the connection informations are a bit different :
@@ -111,6 +113,8 @@ In a `DBeaver` installed on host machine, the connection informations are a bit 
 - Maintenance database : db
 - Username : user
 - Password : password
+
+> See also the [DBeaver documentation](https://github.com/dbeaver/dbeaver/wiki/Database-Navigator)
 
 ## :bomb: Troublecases
 
@@ -178,7 +182,7 @@ $ curl -X GET http://localhost:8083/connectors/postgresql-sms-sink-connector/sta
 }
 ```
 
-The task 0 is on a `FAILED` state, we have to restart it to send all message stayed in the topic
+The task `0` is on a [`FAILED`](https://docs.confluent.io/home/connect/monitoring.html#connector-and-task-status) state, we have to restart it to send all message stayed in the topic
 
 ```bash
 curl -X POST http://localhost:8083/connectors/postgresql-sms-sink-connector/tasks/0/restart

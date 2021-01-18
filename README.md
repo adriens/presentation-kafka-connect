@@ -36,7 +36,7 @@ The purpose of this repository is to :
 - Download [git](https://git-scm.com/downloads)
 - Get started with [docker](https://www.docker.com/get-started)
 - Install [docker-compose](https://docs.docker.com/compose/install/)
-- `curl` command available or a REST client like [`Postman`](https://www.postman.com/downloads/) / [`Insomnia`](https://insomnia.rest/)
+- `curl` command available or a REST client like [Postman](https://www.postman.com/downloads/) / [Insomnia](https://insomnia.rest/)
 
 ## :rocket: How to use
 
@@ -54,7 +54,7 @@ In this way to use `kafka-connect`, we will deploy the entire stack on `docker` 
 - [`Kafka Connect JDBC`](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc) - *"JDBC source and sink connectors"*
 - [`Debezium PostgreSQL CDC Connector`](https://www.confluent.io/hub/debezium/debezium-connector-postgresql) - *"Debezium’s PostgreSQL Connector can monitor and record the row-level changes in the schemas of a PostgreSQL database"*
 
-> See alse [Discover Kafka connectors and more](https://www.confluent.io/hub)
+> See also [Discover Kafka connectors and more](https://www.confluent.io/hub)
 
 ### 2. Deployment
 
@@ -80,8 +80,6 @@ $ docker logs confluent-connect | grep started
 ```
 
 ### 3. Connectors creations
-
-> See more endpoints on [Connect REST Interface](https://docs.confluent.io/platform/current/connect/references/restapi.html) documentation
 
 For create connectors to extract/inject datas between Kafka and external databases, we utilize curl commands trough the api `kafka-connect` endpoints :
 
@@ -135,6 +133,8 @@ Like the source file configuration, it exists the same for the sink side [postgr
     }
 }
 ```
+
+> See more endpoints on [Connect REST Interface](https://docs.confluent.io/platform/current/connect/references/restapi.html) documentation
 
 ### 4. Manipulate the data
 
