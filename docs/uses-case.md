@@ -14,6 +14,9 @@ Back to [README.md](../README.md)
 - [Troublecases](#bomb-troublecases)
   - [Sink database down](#sink-database-down)
   - [Kafka connect down](#kafka-connect-down)
+- [Usefuls links](#link-usefuls-links)
+  - [Resources](#resources)
+  - [Others](#others)
 
 ## :speech_balloon: Description
 
@@ -39,35 +42,13 @@ curl -X POST http://localhost:8083/connectors \
 
 ### 4. Produce data
 
-Run a `confluentinc/cp-schema-registry:5.5.0` in interactive mode
+Run a `confluentinc/cp-schema-registry:5.5.0` container in [interactive mode](https://docs.docker.com/engine/reference/commandline/run/#assign-name-and-allocate-pseudo-tty---name--it)
 
 ```bash
 docker run -it --net=host --rm --name kafka-json-producer confluentinc/cp-schema-registry:5.5.0 bash
 ```
 
 Create a producer with a structured schema
-
-sms schema preview :
-
-```json
-{
-    "type": "object",
-    "properties": {
-        "phoneNumberEmitter": {
-            "type": "string"
-        },
-        "phoneNumberReceiver": {
-            "type": "string"
-        },
-        "message": {
-            "type": "string"
-        }
-    },
-    "additionalProperties": false
-}
-```
-
-json schema producer command :
 
 ```bash
 kafka-json-schema-console-producer \
@@ -98,24 +79,28 @@ To explore the postgresql database, you can use a *free multi-platform database 
 #### PgAdmin container
 
 ```bash
-docker run -p 80:80 --net=kafka-connect-pgsql_default --name pgadmin4 -e PGADMIN_DEFAULT_EMAIL=user@domain.com -e PGADMIN_DEFAULT_PASSWORD=SuperSecret -d dpage/pgadmin4
+docker run -p 8085:80 \
+    --net=kafka-connect-pgsql_default \
+    --name pgadmin4 \
+    -e PGADMIN_DEFAULT_EMAIL=user@domain.com \
+    -e PGADMIN_DEFAULT_PASSWORD=SuperSecret \
+    -d \
+    dpage/pgadmin4
 ```
 
-Fill the login information with :
-
-- Email Address / Username : `user@domain.com`
-- Password : SuperSecret
-
-Add a new server _(Dashboard/Add New Server)_ :
-
-- **General tab**
-  - Name : mySinkDatabase
-- **Connection tab**
-  - Hostname/address : postgres-sink
-  - Port : 5432
-  - Maintenance database : db
-  - Username : user
-  - Password : password
+- On address : <http://localhost:8085/>
+- Fill the login information with :
+  - Email Address / Username : `user@domain.com`
+  - Password : SuperSecret
+- Add a new server _(Dashboard/Add New Server)_ :
+  - **General tab**
+    - Name : mySinkDatabase
+  - **Connection tab**
+    - Hostname/address : postgres-sink
+    - Port : 5432
+    - Maintenance database : db
+    - Username : user
+    - Password : password
 
 #### Dbeaver
 
@@ -139,19 +124,7 @@ Stop the sink database
 docker stop postgres-sink
 ```
 
-Produce new messages
-
-```bash
-docker run -it --net=host --rm --name kafka-json-producer confluentinc/cp-schema-registry:5.5.0 bash
-```
-
-```bash
-kafka-json-schema-console-producer \
-    --broker-list localhost:9092 \
-    --topic demo.json.sms \
-    --property schema.registry.url=http://localhost:8081 \
-    --property value.schema='{"type":"object","properties":{"phoneNumberEmitter":{"type":"string"},"phoneNumberReceiver":{"type":"string"},"message":{"type":"string"}},"additionalProperties":false}'
-```
+Produce new messages (commands in [4. Produce data](#4-produce-data) step)
 
 ```bash
 {"phoneNumberEmitter":"123546","phoneNumberReceiver":"321654","message":"Testing is easier than debugging"}
@@ -237,13 +210,15 @@ Let's check it out the database to ensure all messages are there.
 
 ### kafka-connect down
 
+Same kind of issue but with Kafka connect.
+
 Stop the `confluent-connect`
 
 ```bash
 docker stop confluent-connect
 ```
 
-Produce new messages
+Produce new messages (commands in [4. Produce data](#4-produce-data) step)
 
 ```bash
 {"phoneNumberEmitter":"123546","phoneNumberReceiver":"321654","message":"Il est bon ou quoi?"}
@@ -253,6 +228,25 @@ Produce new messages
 {"phoneNumberEmitter":"789987","phoneNumberReceiver":"456654","message":"Ok tal"}
 ```
 
+Restart the `confluent-connect`
+
+```bash
+docker start confluent-connect
+```
+
 Let's check it out the database to ensure all messages are in the sink database.
+
+## :link: Usefuls links
+
+### Resources
+
+- [JSON Schema Serializer and Deserializer](https://docs.confluent.io/5.5.0/schema-registry/serdes-develop/serdes-json.html)
+- [Monitoring Kafka Connect and Connectors](https://docs.confluent.io/platform/current/connect/monitoring.html)
+
+### Others
+
+- [pgAdmin - PostgreSQL Tools](https://www.pgadmin.org/)
+  - [dpage/pgadmin4](https://hub.docker.com/r/dpage/pgadmin4)
+  - [pgAdmin 4 (Container)](https://www.pgadmin.org/download/pgadmin-4-container/)
 
 Back to [README.md](../README.md)

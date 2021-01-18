@@ -220,6 +220,7 @@ docker run --net=host --rm \
   - [Kafka Connect JDBC](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc)
   - [Debezium PostgreSQL CDC Connector](https://www.confluent.io/hub/debezium/debezium-connector-postgresql)
 - [Connect REST Interface](https://docs.confluent.io/platform/current/connect/references/restapi.html)
+- [PostgreSQL Source Connector (Debezium) Configuration Properties](https://docs.confluent.io/debezium-connect-postgres-source/current/postgres_source_connector_config.html)
 
 #### Debezium
 
@@ -227,6 +228,7 @@ docker run --net=host --rm \
 - [Tutorial](https://debezium.io/documentation/reference/1.3/tutorial.html)
 - [Avro Serialization](https://debezium.io/documentation/reference/1.3/configuration/avro.html)
 - [Debezium connector for PostgreSQL](https://debezium.io/documentation/reference/1.3/connectors/postgresql.html#postgresql-connector-properties)
+- [debezium/connect](https://hub.docker.com/r/debezium/connect)
 
 ### Others
 
