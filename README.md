@@ -140,6 +140,8 @@ Like the source file configuration, it exists the same for the sink side [postgr
 
 Let's try it out ! Update or insert rows on `public.employees` table in postgres-source database.
 
+> See the differents [ways](docs/databases-connection.md) to explore databases of this project
+
 ## :pouting_man: Uses case
 
 See an [use case example](docs/uses-case.md)
