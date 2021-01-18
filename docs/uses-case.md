@@ -30,9 +30,11 @@ We need to use the plugins [`Kafka Connect JDBC`](https://www.confluent.io/hub/c
 
 ### 2. Kafka and database
 
-The [based docker environment](../README.md#2-deployment) can be used. But in this example, we doesn't need a source database, so you can use the `uses-case.yml` instead.
+The [based docker environment](../README.md) can be used. But in this example, we doesn't need a source database, so you can use the `uses-case.yml` instead.
 
 ### 3. Create sink connector
+
+Create the [postgresql-sms-sink.json](../connectors/postgresql-sms-sink.json) connector
 
 ```bash
 curl -X POST http://localhost:8083/connectors \
@@ -88,7 +90,7 @@ docker run -p 8085:80 \
     dpage/pgadmin4
 ```
 
-- On address : <http://localhost:8085/>
+- On address <http://localhost:8085/>
 - Fill the login information with :
   - Email Address / Username : `user@domain.com`
   - Password : SuperSecret

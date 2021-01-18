@@ -22,7 +22,7 @@ services:
       KAFKA_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://0.0.0.0:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:
-      - ./connectors/jars:/usr/local/share/kafka/plugins
+      - ./plugins:/usr/local/share/kafka/plugins
 
   # Confluent registry
   # https://docs.confluent.io/platform/current/schema-registry/index.html
