@@ -1,5 +1,26 @@
 # presentation-kafka-connect
 
+- [Description](#speech_balloon-description)
+- [Prerequisites](#books-prerequisites)
+- [How to use](#rocket-how-to-use)
+  - [1. Kafka Connect plugins](#1-kafka-connect-plugins)
+  - [2. Deployment](#2-deployment)
+  - [3. Connectors creations](#3-connectors-creations)
+  - [4. Manipulate the data](#4-manipulate-the-data)
+- [Uses case](#pouting_man-uses-case)
+- [Others Commands](#gear-others-commands)
+  - [Docker](#docker)
+    - [Teardown & uninstall](#teardown-&-uninstall)
+  - [Kafka](#kafka)
+    - [List topics](#list-topics)
+    - [Read topic](#read-topic)
+    - [Read topic (Avro)](#read-topic-avro)
+- [Usefuls links](#link-usefuls-links)
+  - [Resources](#resources)
+    - [Confluent](#confluent)
+    - [Debezium](#debezium)
+  - [Others](#others)
+
 ## :speech_balloon: Description
 
 Kafka Connect Demo
@@ -7,37 +28,35 @@ Kafka Connect Demo
 The purpose of this repository is to :
 
 - [ ] provide a slideshow that explains how Kafka Connect can be used, its principles and guidelines to set it up to connect Kafka and Psql
-- [ ] A set of script based on Docker images and shell scripts to let people run the demo by themselves
-- [ ] Show some use cases
+- [x] A set of script based on Docker images and shell scripts to let people run the demo by themselves
+- [x] Show some use cases
 
 ## :books: Prerequisites
 
 - Download [git](https://git-scm.com/downloads)
 - Get started with [docker](https://www.docker.com/get-started)
 - Install [docker-compose](https://docs.docker.com/compose/install/)
-- `curl` command available
+- `curl` command available or a REST client like [`Postman`](https://www.postman.com/downloads/) / [`Insomnia`](https://insomnia.rest/)
 
 ## :rocket: How to use
-
-### Confluent Kafka-Connect
-
-> See also [Kafka Connect Tutorial on Docker](https://docs.confluent.io/5.0.0/installation/docker/docs/installation/connect-avro-jdbc.html)
 
 In this way to use `kafka-connect`, we will deploy the entire stack on `docker` environnement. Here we use the `Confluent` elements :
 
 - [`schema-registry`](https://docs.confluent.io/platform/current/schema-registry/index.html) - *"It provides a RESTful interface for storing and retrieving your Avro, JSON Schema, and Protobuf schemas."*
 - [`kafka-connect`](https://docs.confluent.io/platform/current/connect/index.html) - *"Kafka Connect is a tool for scalably and reliably streaming data between Apache Kafka and other data systems."*
 
-#### 1. Kafka Connect plugins
+> See also [Kafka Connect Tutorial on Docker](https://docs.confluent.io/5.0.0/installation/docker/docs/installation/connect-avro-jdbc.html)
 
-> See alse [Discover Kafka connectors and more](https://www.confluent.io/hub)
+### 1. Kafka Connect plugins
 
 `kafka-connect` need plugins to interact with databases, download them and extract the content in the `plugins` folder :
 
 - [`Kafka Connect JDBC`](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc) - *"JDBC source and sink connectors"*
 - [`Debezium PostgreSQL CDC Connector`](https://www.confluent.io/hub/debezium/debezium-connector-postgresql) - *"Debezium’s PostgreSQL Connector can monitor and record the row-level changes in the schemas of a PostgreSQL database"*
 
-#### 2. Deployment
+> See alse [Discover Kafka connectors and more](https://www.confluent.io/hub)
+
+### 2. Deployment
 
 Now, we can launch the environment :
 
@@ -60,7 +79,7 @@ $ docker logs confluent-connect | grep started
 [2021-01-08 00:32:41,837] INFO Kafka Connect started (org.apache.kafka.connect.runtime.Connect)
 ```
 
-#### 3. Connectors creations
+### 3. Connectors creations
 
 > See more endpoints on [Connect REST Interface](https://docs.confluent.io/platform/current/connect/references/restapi.html) documentation
 
@@ -117,9 +136,13 @@ Like the source file configuration, it exists the same for the sink side [postgr
 }
 ```
 
-#### 4. Manipulate the data
+### 4. Manipulate the data
 
 Let's try it out ! Update or insert rows on `public.employees` table in postgres-source database.
+
+## :pouting_man: Uses case
+
+See an [use case example](docs/uses-case.md)
 
 ## :gear: Others Commands
 
@@ -154,7 +177,7 @@ Removing postgres-sink      ... done
 #### List topics
 
 ```bash
-docker run --net=host --rm
+docker run --net=host --rm \
     wurstmeister/kafka:2.11-2.0.0 sh opt/kafka_2.11-2.0.0/bin/kafka-topics.sh \
         --zookeeper localhost:2181 \
         --list
@@ -163,7 +186,7 @@ docker run --net=host --rm
 #### Read topic
 
 ```bash
-docker run --net=host --rm
+docker run --net=host --rm \
     wurstmeister/kafka:2.11-2.0.0 sh opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh \
         --bootstrap-server localhost:9092 \
         --topic hrdata.public.employees \
