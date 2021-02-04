@@ -51,7 +51,10 @@ services:
       - confluent-registry
     ports:
       - "8083:8083"
+      - "9010:9010"
     environment:
+      KAFKA_JMX_HOSTNAME: 127.0.0.1
+      KAFKA_JMX_PORT: 9010
       CONNECT_BOOTSTRAP_SERVERS: kafka:29092
       CONNECT_REST_ADVERTISED_HOST_NAME: localhost
       CONNECT_REST_PORT: 8083
