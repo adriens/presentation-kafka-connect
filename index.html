@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+		<link rel="stylesheet" href="plugin/verticator/verticator.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background-image="img/bg-kafka.png" data-background-opacity="0.05">
+					<h2>Kafka-connect</h2>
+				</section>
+				<section><img style="background-color: lightgray;" src="img/kafka-apis_connectors.png"></section>
+				<section data-background-image="img/bg-kafka.png" data-background-opacity="0.05">
+					<h2>Kafka-connect</h2>
+					<ul>
+						<li><span style="color:lime">Libre</span> & <span style="color:lime">open-source</span> par Apache Kafka</li>
+						<li>Idéal pour intégrations <span style="color:lime">simples</span> entre Kafka / BDDs</li>
+						<li>Pas de code...</li>
+						<li>... Uniquement de la configuration</li>
+					</ul>
+				</section>
+				<section data-background-image="img/bg-confluent.png" data-background-opacity="0.15">
+					<section>
+						<h2>Confluent</h2>
+						<ul>
+							<li>Connectors</li>
+							<li>schema-registry</li>
+						</ul>
+					</section>
+					<section>
+						<h2>schema-registry</h2>
+						<ul>
+							<li>Cohérence des structures des données</li>
+							<li>Gère les types de schema :
+								<ul>
+									<li>Avro® (Apache)</li>
+									<li>JSON schemas</li>
+									<li>Protobuf schemas (Google)</li>
+								</ul>
+						</ul>
+					</section>
+					<section>
+						<h4>Exemple JSON schema</h4>
+						<pre data-id="code-animation"><code class="json" data-trim data-line-numbers>
+							{
+							    "type": "object",
+							    "properties": {
+							        "phoneNumberEmitter": {
+							            "type": "string"
+							        },
+							        "phoneNumberReceiver": {
+							            "type": "string"
+							        },
+							        "message": {
+							            "type": "string"
+							        }
+							    },
+							    "additionalProperties": false
+							}
+							</code></pre>
+					</section>
+				</section>
+				<section>
+					<h3>Architecture</h3>
+					<img style="background-color: lightgray;" src="img/kafka_connect_source_sink_flow_diagram_on_white.png">
+				</section>
+				<section data-background-image="img/bg-connect.png" data-background-opacity="0.2">
+					<h3>Exemple cas d'usage</h3>
+					<img style="background-color: lightgray;" src="img/kafka-connect-sms.png">
+				</section>
+				<section data-background-image="img/bg-connect.png" data-background-opacity="0.2">
+					<section>
+						<h4>Base de donnée non disponible</h4>
+						<img style="background-color: lightgray;" src="img/kafka-connect-use-cases-bdd-down.png">
+					</section>	
+					<section>
+						<h4>Connector en anomalie</h4>
+						<img style="background-color: lightgray;" src="img/kafka-connect-use-cases-bdd-down-2.png">
+					</section>
+					<section>
+						<h5>Base de donnée remise en marche + relance du connector</h5>
+						<img style="background-color: lightgray;" src="img/kafka-connect-use-cases-bdd-down-3.png">
+					</section>
+					<section>
+						<h4>Reprise des données présents dans le topic</h4>
+						<img style="background-color: lightgray;" src="img/kafka-connect-use-cases-bdd-down-4.png">
+					</section>
+				</section>
+				<section data-background-image="img/bg-monitoring.jpg" data-background-opacity="0.07">
+					<section>
+						<h1>Monitoring</h1>
+					</section>
+					<section>
+						<h2>REST</h2>
+						<pre data-id="code-animation"><code class="shell" data-trim data-line-numbers>
+							$ curl localhost:8083/connectors/s3-connector/status | jq
+						</code></pre>
+						<pre data-id="code-animation"><code class="json" data-trim data-line-numbers>
+							{
+								"name": "s3-connector",
+								"connector": {
+								   "state": "RUNNING",
+								   "worker_id": "192.168.86.66:8083"
+								},
+								"tasks": [
+								{
+								   "id": 0,
+								   "state": "RUNNING",
+								   "worker_id": "192.168.86.66:8083"
+								}
+								],
+								"type": "sink"
+							 }
+						</code></pre>
+					</section>
+					<section>
+						<h2>JMX</h2>
+						<table>
+							<thead>
+								<tr>
+									<th>Metric</th>
+									<th>Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>task-count</td>
+									<td>Number of tasks that have run in this worker</td>
+								</tr>
+								<tr>
+									<td>connector-startup-success-total</td>
+									<td>Total number of connector starts that succeeded</td>
+								</tr>
+								<tr>
+									<td>...</td>
+									<td>...</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+					<section>
+						<img src="img/jconsole-graph.PNG">
+					</section>
+					<section>
+						<img src="img/jconsole-mbean.PNG">
+					</section>
+				</section>
+				<section data-background-image="img/bg-spring.jpg" data-background-opacity="0.07">
+					<h2>Alternative</h2>
+					<h4 style="color:lightgray"><span style="color:greenyellow">Spring</span> Kafka consumer / Kafka streams</h4>
+					<ul>
+						<li style="color:lime">Socle OPT</li>
+						<li style="color:red">Développement à prévoir</li>
+						<li style="color:red">Design for failures à gérer</li>
+					</ul>
+				</section>
+				<section data-background-image="img/bg-kafka.png" data-background-opacity="0.05"><h1>Questions</h1></section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/verticator/verticator.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+                slideNumber: 'c/t',
+                verticator: { darktheme: true },
+                allottedTime: 30 * 60 * 1000, // 30 minutes
+				// Learn about plugins: https://revealjs.com/plugins/
+                plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, Verticator ],
+                dependencies: [{ src: 'plugin/elapsed-time-bar/elapsed-time-bar.js' }]
+			});
+		</script>
+	</body>
+</html>
