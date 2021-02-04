@@ -27,7 +27,7 @@ Kafka Connect Demo
 
 The purpose of this repository is to :
 
-- [ ] provide a slideshow that explains how Kafka Connect can be used, its principles and guidelines to set it up to connect Kafka and Psql
+- [x] provide a [slideshow](https://github.com/adriens/presentation-kafka-connect/tree/gh-pages) that explains how Kafka Connect can be used, its principles and guidelines to set it up to connect Kafka and Psql
 - [x] A set of script based on Docker images and shell scripts to let people run the demo by themselves
 - [x] Show some [use cases](docs/uses-case.md)
 
