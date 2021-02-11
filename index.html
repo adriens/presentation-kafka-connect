@@ -20,9 +20,11 @@
 				<section data-background-image="img/bg-kafka.png" data-background-opacity="0.05">
 					<h2>Kafka-connect</h2>
 				</section>
-				<section><img style="background-color: lightgray;" src="img/kafka-apis_connectors.png"></section>
 				<section data-background-image="img/bg-kafka.png" data-background-opacity="0.05">
-					<h2>Kafka-connect</h2>
+					<p>Comment charger des données directement <br>depuis <span style="color:lime">Kafka vers une BDD</span> <br>avec une solution simple d'utilisation ?</p>
+				</section>
+				<section data-background-image="img/bg-kafka.png" data-background-opacity="0.05">
+					<h3><span style="color: yellow">Kafka-connect</span> ? Pourquoi ?</h3>
 					<ul>
 						<li><span style="color:lime">Libre</span> & <span style="color:lime">open-source</span> par Apache Kafka</li>
 						<li>Idéal pour intégrations <span style="color:lime">simples</span> entre Kafka / BDDs</li>
@@ -34,14 +36,14 @@
 					<section>
 						<h2>Confluent</h2>
 						<ul>
-							<li>Connectors</li>
 							<li>schema-registry</li>
+							<li>Connectors</li>
 						</ul>
 					</section>
 					<section>
 						<h2>schema-registry</h2>
 						<ul>
-							<li>Cohérence des structures des données</li>
+							<li><span style="color:aqua">Cohérence</span> des structures des données</li>
 							<li>Gère les types de schema :
 								<ul>
 									<li>Avro® (Apache)</li>
@@ -155,16 +157,48 @@
 					<section>
 						<img src="img/jconsole-mbean.PNG">
 					</section>
+					<section>
+						<img src="img/visualvm-graph.PNG">
+					</section>
+					<section>
+						<img src="img/visualvm-mbean.PNG">
+					</section>
 				</section>
 				<section data-background-image="img/bg-spring.jpg" data-background-opacity="0.07">
 					<h2>Alternative</h2>
-					<h4 style="color:lightgray"><span style="color:greenyellow">Spring</span> Kafka consumer / Kafka streams</h4>
-					<ul>
-						<li style="color:lime">Socle OPT</li>
-						<li style="color:red">Développement à prévoir</li>
-						<li style="color:red">Design for failures à gérer</li>
-					</ul>
+					<table style="font-size: 32px;">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Kafka connect</th>
+								<th>Consumer <span style="color:greenyellow">Spring</span> Kafka</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Socle OPT</td>
+								<td><i style="color:red" class="fas fa-times"></i></td>
+								<td><i style="color:lime" class="fas fa-check"></i></td>
+							</tr>
+							<tr>
+								<td>Industrialisé</td>
+								<td><i style="color:red" class="fas fa-times"></i></td>
+								<td><i style="color:lime" class="fas fa-check"></i></td>
+							</tr>							
+							<tr>
+								<td>Aucun développement</td>
+								<td><i style="color:lime" class="fas fa-check"></i></td>
+								<td><i style="color:red" class="fas fa-times"></i></td>
+							</tr>
+							<tr>
+								<td>"Design for failures" natif</td>
+								<td><i style="color:lime" class="fas fa-check"></i></td>
+								<td><i style="color:red" class="fas fa-times"></i></td>
+							</tr>
+						</tbody>
+					</table>
 				</section>
+				<section data-background-image="img/bg-livedemo.png" data-background-opacity="0.05"><h1>Live demo</h1></section>
 				<section data-background-image="img/bg-kafka.png" data-background-opacity="0.05"><h1>Questions</h1></section>
 			</div>
 		</div>
@@ -174,6 +208,7 @@
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
 		<script src="plugin/verticator/verticator.js"></script>
+		<script src="https://kit.fontawesome.com/d31f2c209e.js" crossorigin="anonymous"></script>
 		<script>
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/
