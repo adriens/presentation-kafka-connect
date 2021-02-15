@@ -124,12 +124,17 @@ docker run -p 8085:80 \
 
 - On address <http://localhost:8085/>
 - Fill the login information with :
-  - Email Address / Username : `user@domain.com`
-  - Password : SuperSecret
+
+    |Parameter|Value|
+    |:--------|:----|
+    |Email Address / Username|`user@domain.com`|
+    |Password|SuperSecret|
+
 - Add a new server _(Dashboard/Add New Server)_ :
   - **General tab**
     - Name : mySinkDatabase
   - **Connection tab**
+
     |Parameter|Value|
     |:--------|:----|
     |Hostname/address|postgres-sink|
@@ -144,11 +149,13 @@ docker run -p 8085:80 \
 
 In a `DBeaver` installed on host machine, the connection informations are a bit different :
 
-- :warning: Hostname/address : localhost
-- :warning: Port : 5433
-- Maintenance database : db
-- Username : user
-- Password : password
+|Parameter|Value|
+|:--------|:----|
+|:warning: Hostname/address|localhost|
+|:warning: Port|5433|
+|Maintenance database|db|
+|Username|user|
+|Password|password|
 
 > See also the [DBeaver documentation](https://github.com/dbeaver/dbeaver/wiki/Database-Navigator)
 
