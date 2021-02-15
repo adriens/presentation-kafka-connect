@@ -4,11 +4,10 @@ Back to [README.md](../README.md)
 
 - [Description](#speech_balloon-description)
 - [Deploy](#rocket-deploy)
-  - [1. Kafka connect plugins](#1-kafka-connect-plugins)
-  - [2. Kafka and database](#2-kafka-and-database)
-  - [3. Create sink connector](#3-create-sink-connector)
-  - [4. Produce data](#4-produce-data)
-  - [5. Check the database](#5-check-the-database)
+  - [1. Kafka and database](#1-kafka-and-database)
+  - [2. Create sink connector](#2-create-sink-connector)
+  - [3. Produce data](#3-produce-data)
+  - [4. Check the database](#4-check-the-database)
     - [PgAdmin container](#pgadmin-container)
     - [DBeaver](#dbeaver)
 - [Troublecases](#bomb-troublecases)
@@ -24,33 +23,11 @@ Let's see an uses case example using environment previously deployed. We have a 
 
 ## :rocket: Deploy
 
-### 1. Kafka connect plugins
-
-We need to use the plugins [`Kafka Connect JDBC`](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc) and [`Kafka Connect JSON Schema Transformations`](https://www.confluent.io/hub/jcustenborder/kafka-connect-json-schema), make sure to have this .jar in plugins folder or running the commands below :
-
-```sh
-wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.0.1/confluentinc-kafka-connect-jdbc-10.0.1.zip \
---directory-prefix plugins
-```
-
-```sh
-unzip plugins/confluentinc-kafka-connect-jdbc-10.0.1.zip -d plugins/
-```
-
-```sh
-wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-json-schema-converter/versions/5.5.3/confluentinc-kafka-connect-json-schema-converter-5.5.3.zip \
---directory-prefix plugins
-```
-
-```sh
-unzip plugins/confluentinc-kafka-connect-json-schema-converter-5.5.3.zip -d plugins/
-```
-
-### 2. Kafka and database
+### 1. Kafka and database
 
 The [based docker environment](../README.md) can be used. But in this example, we doesn't need a source database, so you can use the `uses-case.yml` instead.
 
-### 3. Create sink connector
+### 2. Create sink connector
 
 Create the [postgresql-sms-sink.json](../connectors/postgresql-sms-sink.json) connector
 
@@ -60,7 +37,7 @@ curl -X POST http://localhost:8083/connectors \
     --data @connectors/postgresql-sms-sink.json
 ```
 
-### 4. Produce data
+### 3. Produce data
 
 Run a `confluentinc/cp-schema-registry:5.5.0` container in [interactive mode](https://docs.docker.com/engine/reference/commandline/run/#assign-name-and-allocate-pseudo-tty---name--it)
 
@@ -102,7 +79,7 @@ $ docker run --net=host --rm wurstmeister/kafka:2.11-2.0.0 sh opt/kafka_2.11-2.0
 {"phoneNumberEmitter":"778899","phoneNumberReceiver":"665544","message":"It's dangerous to go alone"}
 ```
 
-### 5. Check the database
+### 4. Check the database
 
 To explore the postgresql database, you can use a *free multi-platform database tool* like [`DBeaver`](https://dbeaver.io/download/) or continue with docker philosophy and run a [`pgadmin`](https://www.pgadmin.org/docs/pgadmin4/development/container_deployment.html) container.
 
@@ -153,11 +130,13 @@ docker run -p 8085:80 \
   - **General tab**
     - Name : mySinkDatabase
   - **Connection tab**
-    - Hostname/address : postgres-sink
-    - Port : 5432
-    - Maintenance database : db
-    - Username : user
-    - Password : password
+    |Parameter|Value|
+    |:--------|:----|
+    |Hostname/address|postgres-sink|
+    |Port|5432|
+    |Maintenance database|db|
+    |Username|user|
+    |Password|password|
 
 > See also the [pgAdmin documentation](https://www.pgadmin.org/docs/pgadmin4/latest/server_dialog.html)
 
