@@ -42,7 +42,7 @@ services:
   # Confluent connect
   # https://docs.confluent.io/platform/current/connect/index.html
   confluent-connect:
-    image: confluentinc/cp-kafka-connect
+    image: confluentinc/cp-kafka-connect:6.0.1
     hostname: confluent-connect
     container_name: confluent-connect
     depends_on:
