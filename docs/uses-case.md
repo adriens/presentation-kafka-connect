@@ -26,7 +26,25 @@ Let's see an uses case example using environment previously deployed. We have a 
 
 ### 1. Kafka connect plugins
 
-We need to use the plugins [`Kafka Connect JDBC`](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc) and [`Kafka Connect JSON Schema Transformations`](https://www.confluent.io/hub/jcustenborder/kafka-connect-json-schema), make sure to have this .jar in plugins folder.
+We need to use the plugins [`Kafka Connect JDBC`](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc) and [`Kafka Connect JSON Schema Transformations`](https://www.confluent.io/hub/jcustenborder/kafka-connect-json-schema), make sure to have this .jar in plugins folder or running the commands below :
+
+```sh
+wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.0.1/confluentinc-kafka-connect-jdbc-10.0.1.zip \
+--directory-prefix plugins
+```
+
+```sh
+unzip plugins/confluentinc-kafka-connect-jdbc-10.0.1.zip -d plugins/
+```
+
+```sh
+wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-json-schema-converter/versions/5.5.3/confluentinc-kafka-connect-json-schema-converter-5.5.3.zip \
+--directory-prefix plugins
+```
+
+```sh
+unzip plugins/confluentinc-kafka-connect-json-schema-converter-5.5.3.zip -d plugins/
+```
 
 ### 2. Kafka and database
 
@@ -74,9 +92,46 @@ It is easier to copy paste an entire message in a `kafka-json-schema-console-pro
 {"phoneNumberEmitter":"778899","phoneNumberReceiver":"665544","message":"It's dangerous to go alone"}
 ```
 
+At this state, we can see the topic `demo.json.sms` content
+
+```console
+$ docker run --net=host --rm wurstmeister/kafka:2.11-2.0.0 sh opt/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic demo.json.sms --from-beginning
+{"phoneNumberEmitter":"112233","phoneNumberReceiver":"445566","message":"Don't worry, be happy"}
+{"phoneNumberEmitter":"332211","phoneNumberReceiver":"665544","message":"The last but not least"}
+{"phoneNumberEmitter":"445566","phoneNumberReceiver":"778899","message":"You shall not pass"}
+{"phoneNumberEmitter":"778899","phoneNumberReceiver":"665544","message":"It's dangerous to go alone"}
+```
+
 ### 5. Check the database
 
 To explore the postgresql database, you can use a *free multi-platform database tool* like [`DBeaver`](https://dbeaver.io/download/) or continue with docker philosophy and run a [`pgadmin`](https://www.pgadmin.org/docs/pgadmin4/development/container_deployment.html) container.
+
+#### postgres CLI
+
+> Recommended
+
+```console
+$ docker run --name postgres-psql -it --rm --network host postgres psql -h localhost -p 5433 -U user -d db
+Password for user user:
+psql (13.1 (Debian 13.1-1.pgdg100+1))
+Type "help" for help.
+
+db=#
+```
+
+```sql
+select * from sms;
+```
+
+```sh
+ phoneNumberReceiver |          message           | phoneNumberEmitter
+---------------------+----------------------------+--------------------
+ 445566              | Don't worry, be happy      | 112233
+ 665544              | The last but not least     | 332211
+ 778899              | You shall not pass         | 445566
+ 665544              | It's dangerous to go alone | 778899
+(4 rows)
+```
 
 #### PgAdmin container
 
