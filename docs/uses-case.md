@@ -23,6 +23,19 @@ Let's see an uses case example using environment previously deployed. We have a 
 
 ## :rocket: Deploy
 
+### 1. Connector plugin
+
+We need to use the plugin [`Kafka Connect JDBC`](https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc)
+
+```sh
+wget https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-jdbc/versions/10.0.1/confluentinc-kafka-connect-jdbc-10.0.1.zip \
+--directory-prefix plugins
+```
+
+```sh
+unzip plugins/confluentinc-kafka-connect-jdbc-10.0.1.zip -d plugins/
+```
+
 ### 1. Kafka and database
 
 The [based docker environment](../README.md) can be used. But in this example, we doesn't need a source database, so you can use the `uses-case.yml` instead.
