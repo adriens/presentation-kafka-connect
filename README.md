@@ -211,6 +211,10 @@ docker run --net=host --rm \
 
 ### Resources
 
+#### Katacoda scenario
+
+- [Kafka connect](http://bit.ly/3k4d3z9)
+
 #### Confluent
 
 - [Kafka Connect Tutorial on Docker](https://docs.confluent.io/5.0.0/installation/docker/docs/installation/connect-avro-jdbc.html)
