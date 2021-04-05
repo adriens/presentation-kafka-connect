@@ -213,7 +213,7 @@ docker run --net=host --rm \
 
 #### Katacoda scenario
 
-- [Kafka connect](http://bit.ly/3k4d3z9)
+- [Kafka connect](http://bit.ly/3fj4bW4)
 
 #### Confluent
 
